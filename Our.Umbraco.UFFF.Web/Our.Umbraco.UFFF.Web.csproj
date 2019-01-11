@@ -59,7 +59,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AppStart.cs" />
     <Compile Include="Config\ApplicationDefinition.cs" />
     <Compile Include="Config\UfffTree.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

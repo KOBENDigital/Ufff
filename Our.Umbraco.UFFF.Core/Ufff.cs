@@ -2,17 +2,18 @@
 using Our.Umbraco.UFFF.Core.Services;
 using System;
 using System.Linq;
-using Umbraco.Core.Components;
 
 namespace Our.Umbraco.Ufff.Core
 {
     class Ufff
     {
-        DataService _dataService;
+        private DataService _dataService;
+        private TriggerService _triggerService;
 
         public Ufff()
         {
             _dataService = new DataService();
+            _triggerService = new TriggerService();
         }
 
 
@@ -26,15 +27,16 @@ namespace Our.Umbraco.Ufff.Core
 
         void RegisterTriggers()
         {
-            var triggerType = typeof(ITrigger);
             var triggers = AppDomain.CurrentDomain.GetAssemblies()
                 .SelectMany(s => s.GetTypes())
-                .Where(p => triggerType.IsAssignableFrom(p) && !p.IsInterface)
-                .OfType<ITrigger>();
+                .Where(p => typeof(ITrigger).IsAssignableFrom(p) && !p.IsInterface);
 
 
-            foreach (var trigger in triggers)
+            foreach (var triggerType in triggers)
             {
+                ITrigger trigger = (ITrigger)Activator.CreateInstance(triggerType);
+
+                _triggerService.HydrateTriggerActions(trigger);
                 trigger.Register();
             }
 

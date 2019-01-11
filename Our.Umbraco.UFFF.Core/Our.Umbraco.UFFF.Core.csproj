@@ -215,7 +215,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Models\Action.cs" />
+    <Compile Include="Models\ActionBase.cs" />
+    <Compile Include="Models\TriggerBase.cs" />
+    <Compile Include="Services\TriggerService.cs" />
     <Compile Include="Ufff.cs" />
     <Compile Include="Attributes\ConnectorAttribute.cs" />
     <Compile Include="Interfaces\IAction.cs" />

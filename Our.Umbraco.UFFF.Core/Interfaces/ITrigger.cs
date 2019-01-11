@@ -8,7 +8,7 @@ namespace Our.Umbraco.Ufff.Core.Interfaces
         /// <summary>
         /// Stores all the <see cref="IAction"/> registered against this trigger
         /// </summary>
-        IList<Action> Actions { get; set; }
+        List<IAction> Actions { get; set; }
 
         /// <summary>
         /// The alias for this action (must be unique)
@@ -16,7 +16,7 @@ namespace Our.Umbraco.Ufff.Core.Interfaces
         string Alias { get; }
 
         /// <summary>
-        /// Registers the trigger into Ufff and loads the related actions from the database if any
+        /// Registers the trigger into Ufff and loads the related actions from the database if any. This has to include the event listener that needs to be executed.
         /// </summary>
         void Register();
     }

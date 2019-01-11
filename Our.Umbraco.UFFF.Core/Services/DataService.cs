@@ -1,4 +1,6 @@
-﻿using Our.Umbraco.UFFF.Core.Models.Data;
+﻿using Our.Umbraco.Ufff.Core.Interfaces;
+using Our.Umbraco.UFFF.Core.Models.Data;
+using System.Collections.Generic;
 using Umbraco.Core;
 using Umbraco.Core.Persistence;
 using UfffData = Our.Umbraco.UFFF.Core.Models.Data;
@@ -35,5 +37,16 @@ namespace Our.Umbraco.UFFF.Core.Services
         {
             _ctx.Database.Delete(action);
         }
+
+        /// <summary>
+        /// Returns the actions subscribed to certain trigger.
+        /// </summary>
+        /// <param name="trigger"></param>
+        /// <returns></returns>
+        public IEnumerable<Action> GetActions(ITrigger trigger)
+        {
+            return _ctx.Database.Query<Action>($"select * from {UfffData.Constants.DatabaseSchema.Tables.Actions} where TriggerAlias = '{trigger.Alias}'");
+        }
+
     }
 }

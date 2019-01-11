@@ -12,7 +12,5 @@ namespace Our.Umbraco.UFFF.Core.Models.Data
         public int Id { get; set; }
         public string Alias { get; set; }
         public string TriggerAlias { get; set; }
-
-      
     }
 }
