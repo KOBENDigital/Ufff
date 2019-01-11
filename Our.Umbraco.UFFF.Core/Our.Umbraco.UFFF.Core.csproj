@@ -45,18 +45,12 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
-    <Reference Include="Umbraco.Core">
-      <HintPath>..\..\..\UmbracoV8\Umbraco-CMS\src\Umbraco.Core\bin\Debug\Umbraco.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="Umbraco.Web">
-      <HintPath>..\..\..\UmbracoV8\Umbraco-CMS\src\Umbraco.Web\bin\Debug\Umbraco.Web.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="App.cs" />
+    <Compile Include="Ufff.cs" />
     <Compile Include="Attributes\ConnectorAttribute.cs" />
     <Compile Include="Interfaces\IAction.cs" />
-    <Compile Include="Interfaces\ITriggerAdaptor.cs" />
+    <Compile Include="Interfaces\ITrigger.cs" />
     <Compile Include="Models\Data\Constants.cs" />
     <Compile Include="Models\Data\LogicAppConfig.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
