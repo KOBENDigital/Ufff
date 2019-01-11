@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Our.Umbraco.UFFF
+namespace Our.Umbraco.Ufff.Core.Interfaces
 {
-    public class Class1
+    public interface ITrigger
     {
+        void Register();
     }
 }
