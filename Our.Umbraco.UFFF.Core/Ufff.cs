@@ -1,4 +1,5 @@
 ﻿using Our.Umbraco.Ufff.Core.Interfaces;
+using Our.Umbraco.UFFF.Core.Services;
 using System;
 using System.Linq;
 using Umbraco.Core.Components;
@@ -7,6 +8,21 @@ namespace Our.Umbraco.Ufff.Core
 {
     class Ufff
     {
+        DataService _dataService;
+
+        public Ufff()
+        {
+            _dataService = new DataService();
+        }
+
+
+
+        public void Init()
+        {
+            _dataService.CreateTables();
+            RegisterTriggers();
+        }
+
 
         void RegisterTriggers()
         {

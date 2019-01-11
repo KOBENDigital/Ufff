@@ -12,7 +12,7 @@ namespace Our.Umbraco.UFFF.Core.Models.Data
         {
             public static class Tables
             {
-                public const string LogicApp = "LogicApps";
+                public const string Actions = "Actions";
             }
         }
     }

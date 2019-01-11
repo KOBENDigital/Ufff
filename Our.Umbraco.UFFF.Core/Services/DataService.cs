@@ -1,38 +1,39 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Our.Umbraco.UFFF.Core.Models.Data;
+using Umbraco.Core;
 using Umbraco.Core.Persistence;
-using Umbraco.Core.Scoping;
-using Umbraco.Web;
-using NPoco;
-using Umbraco.Core.Composing;
+using UfffData = Our.Umbraco.UFFF.Core.Models.Data;
 
 namespace Our.Umbraco.UFFF.Core.Services
 {
-    class DataService
+    public class DataService
     {
-        private readonly IUmbracoDatabase _db;
+        private readonly DatabaseContext _ctx;
 
-        public DataService(IScopeAccessor scopeAccessor)
+        public DataService()
         {
-            _db = scopeAccessor.AmbientScope.Database;
+            _ctx = ApplicationContext.Current.DatabaseContext;
         }
-
 
         public void CreateTables()
         {
-            _db.BeginTransaction();
-           
+            DatabaseSchemaHelper schemaHelper = new DatabaseSchemaHelper(_ctx.Database, ApplicationContext.Current.ProfilingLogger.Logger, _ctx.SqlSyntax);
 
+            _ctx.Database.BeginTransaction();
+
+            if (!schemaHelper.TableExist(UfffData.Constants.DatabaseSchema.Tables.Actions)) schemaHelper.CreateTable<Action>();
+
+            _ctx.Database.CompleteTransaction();
         }
 
 
-        public void SaveLogic()
+        public void SaveAction(Action action)
         {
+            _ctx.Database.Save(action);
+        }
 
+        public void DeleteAction(Action action)
+        {
+            _ctx.Database.Delete(action);
         }
     }
 }
