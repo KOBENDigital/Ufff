@@ -15,6 +15,23 @@ namespace Our.Umbraco.UFFF.Core.Services
         }
 
         /// <summary>
+        /// It'll find all <see cref="ITrigger"/>
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerable<ITrigger> GetAvailableTriggers()
+        {
+            var triggers =  AppDomain.CurrentDomain.GetAssemblies()
+                .SelectMany(s => s.GetTypes())
+                .Where(p => typeof(ITrigger).IsAssignableFrom(p) && !p.IsInterface);
+
+            foreach (var triggerType in triggers)
+            {
+                yield return (ITrigger)Activator.CreateInstance(triggerType);
+            }
+        }
+
+
+        /// <summary>
         /// It finds the linked Actions for a trigger and hydrate its Actions list.
         /// </summary>
         /// <param name="trigger"></param>

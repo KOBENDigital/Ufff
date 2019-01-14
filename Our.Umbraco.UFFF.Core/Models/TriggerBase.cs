@@ -10,7 +10,11 @@ namespace Our.Umbraco.UFFF.Core.Models
 
         public abstract string Alias { get; }
 
+        public abstract Guid Id { get; }
+
+        public abstract string Name { get; }
+
         public abstract void Register();
-        
+
     }
 }

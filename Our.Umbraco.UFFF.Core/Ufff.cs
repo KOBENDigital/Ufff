@@ -1,45 +1,39 @@
 ﻿using Our.Umbraco.Ufff.Core.Interfaces;
 using Our.Umbraco.UFFF.Core.Services;
-using System;
-using System.Linq;
+using System.Collections.Generic;
 
 namespace Our.Umbraco.Ufff.Core
 {
-    class Ufff
+    public static class UfffApplication
     {
-        private DataService _dataService;
-        private TriggerService _triggerService;
+        private static DataService _dataService;
+        public static TriggerService TriggerService { get; }
+        public static IEnumerable<ITrigger> Triggers { get; private set; }
 
-        public Ufff()
+        static UfffApplication()
         {
             _dataService = new DataService();
-            _triggerService = new TriggerService();
+            TriggerService = new TriggerService();
         }
 
 
-
-        public void Init()
+        public static void Init()
         {
             _dataService.CreateTables();
             RegisterTriggers();
         }
 
 
-        void RegisterTriggers()
+        private static void RegisterTriggers()
         {
-            var triggers = AppDomain.CurrentDomain.GetAssemblies()
-                .SelectMany(s => s.GetTypes())
-                .Where(p => typeof(ITrigger).IsAssignableFrom(p) && !p.IsInterface);
+            Triggers = TriggerService.GetAvailableTriggers();
 
-
-            foreach (var triggerType in triggers)
+            foreach (var trigger in Triggers)
             {
-                ITrigger trigger = (ITrigger)Activator.CreateInstance(triggerType);
-
-                _triggerService.HydrateTriggerActions(trigger);
                 trigger.Register();
             }
-
         }
+
     }
+}
 }

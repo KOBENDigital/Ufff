@@ -1,6 +1,7 @@
 ﻿using Our.Umbraco.Ufff.Core.Attributes;
 using Our.Umbraco.Ufff.Core.Interfaces;
 using Our.Umbraco.UFFF.Core.Models;
+using System;
 using System.Collections.Generic;
 using Umbraco.Core.Services.Implement;
 
@@ -9,7 +10,12 @@ namespace Our.Umbraco.Ufff.Core.Triggers
     [Connector("Umbraco", "Content")]
     public class SaveNodeTrigger : TriggerBase
     {
-        public override string Alias => "savedNode";
+
+        public override Guid Id => new Guid("8c8504e0-9505-4dcd-8761-2d4bdf9d782d");
+
+        public override string Alias => "saveNode";
+
+        public override string Name => "Save Node"; 
 
 
         /// <summary>
