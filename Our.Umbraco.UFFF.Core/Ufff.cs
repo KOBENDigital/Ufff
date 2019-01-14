@@ -36,4 +36,3 @@ namespace Our.Umbraco.Ufff.Core
 
     }
 }
-}

@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Our.Umbraco.UFFF.UmbracoSer
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Our.Umbraco.UFFF.MailService", "Our.Umbraco.UFFF.MailService\Our.Umbraco.UFFF.MailService.csproj", "{C558DDCA-EE97-4760-A669-092CCDBC8855}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebClient", "WebClient\WebClient.csproj", "{EC0F1CA1-83E3-4D60-8F44-554E79A6426E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{C558DDCA-EE97-4760-A669-092CCDBC8855}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C558DDCA-EE97-4760-A669-092CCDBC8855}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C558DDCA-EE97-4760-A669-092CCDBC8855}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EC0F1CA1-83E3-4D60-8F44-554E79A6426E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EC0F1CA1-83E3-4D60-8F44-554E79A6426E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EC0F1CA1-83E3-4D60-8F44-554E79A6426E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EC0F1CA1-83E3-4D60-8F44-554E79A6426E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

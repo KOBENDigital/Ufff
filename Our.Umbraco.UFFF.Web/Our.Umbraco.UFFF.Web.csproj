@@ -210,6 +210,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Config\ApplicationDefinition.cs" />
+    <Compile Include="Config\UfffRegistration.cs" />
     <Compile Include="Config\UfffTree.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

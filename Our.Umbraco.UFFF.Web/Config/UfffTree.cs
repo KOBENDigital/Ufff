@@ -1,6 +1,7 @@
 ﻿using Our.Umbraco.Ufff.Core;
 using System;
-using System.Collections.Generic;
+using umbraco;
+using umbraco.BusinessLogic.Actions;
 using Umbraco.Core;
 using Umbraco.Web.Models.Trees;
 using Umbraco.Web.Mvc;
@@ -10,13 +11,28 @@ using Umbraco.Web.WebApi.Filters;
 namespace Our.Umbraco.UFFF.Web.Config
 {
     [UmbracoApplicationAuthorize(Constants.Applications.Content)]
-    [Tree(Constants.Applications.Settings, Constants.Trees.ContentBlueprints, null, sortOrder: 12)]
-    [PluginController("UfffTree")]
+    [Tree("Ufff", "UfffTree", "Events", sortOrder: 12)]
+    [PluginController("Ufff")]
     public class UfffTree : TreeController
     {
         protected override MenuItemCollection GetMenuForNode(string id, System.Net.Http.Formatting.FormDataCollection queryStrings)
         {
-            throw new NotImplementedException();
+            // create a Menu Item Collection to return so people can interact with the nodes in your tree
+            var menu = new MenuItemCollection();
+
+            if (id == Constants.System.Root.ToInvariantString())
+            {
+                // root actions, perhaps users can create new items in this tree, or perhaps it's not a content tree, it might be a read only tree, or each node item might represent something entirely different...
+                // add your menu items here following the pattern of <Umbraco.Web.Models.Trees.ActionMenuItem,umbraco.interfaces.IAction>
+                menu.Items.Add<CreateChildEntity, ActionNew>(ui.Text("actions", ActionNew.Instance.Alias));
+                // add refresh menu item            
+                menu.Items.Add<RefreshNode, ActionRefresh>(ui.Text("actions", ActionRefresh.Instance.Alias), true);
+                return menu;
+            }
+            // add a delete action to each individual item
+            menu.Items.Add<ActionDelete>(ui.Text("actions", ActionDelete.Instance.Alias));
+
+            return menu;
         }
 
         protected override TreeNodeCollection GetTreeNodes(string id, System.Net.Http.Formatting.FormDataCollection queryStrings)
