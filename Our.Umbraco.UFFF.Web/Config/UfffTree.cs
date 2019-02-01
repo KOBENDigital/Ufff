@@ -1,5 +1,7 @@
-﻿using Our.Umbraco.Ufff.Core;
+﻿using Our.Umbraco.UFFF.Core.Models;
 using System;
+using System.Linq;
+using System.Net.Http.Formatting;
 using umbraco;
 using umbraco.BusinessLogic.Actions;
 using Umbraco.Core;
@@ -13,7 +15,7 @@ namespace Our.Umbraco.UFFF.Web.Config
     [UmbracoApplicationAuthorize(Constants.Applications.Content)]
     [Tree("Ufff", "UfffTree", "Events", sortOrder: 12)]
     [PluginController("Ufff")]
-    public class UfffTree : TreeController
+    public class UfffTreeController : TreeController
     {
         protected override MenuItemCollection GetMenuForNode(string id, System.Net.Http.Formatting.FormDataCollection queryStrings)
         {
@@ -37,24 +39,97 @@ namespace Our.Umbraco.UFFF.Web.Config
 
         protected override TreeNodeCollection GetTreeNodes(string id, System.Net.Http.Formatting.FormDataCollection queryStrings)
         {
+            var connectors = TreeStructure.Connectors;
+            var nodes = new TreeNodeCollection();
+
+
             // check if we're rendering the root node's children
             if (id == Constants.System.Root.ToInvariantString())
             {
-                var triggers = UfffApplication.TriggerService.GetAvailableTriggers();
-                
 
-                var nodes = new TreeNodeCollection();
-                foreach (var item in triggers)
+                foreach (var item in connectors)
                 {
-                    var node = CreateTreeNode(item.Id.ToString(), "-1", queryStrings, item.Name);
-                    nodes.Add(node);
+                    AddConnectorNodes(queryStrings, nodes, item);
                 }
 
-                return nodes;
             }
+            else
+            {
+                var connector = connectors.FirstOrDefault(con => con.Id.Equals(new Guid(id)));
+                if (connector != null && connector.Sections.Any())
+                {
+                    //it's a connector so we render its sections
+                    AddSectionNodes(connector, nodes, queryStrings);
+                }
+                else
+                {
+                    ConnectorSection section = null;
+                    foreach (var conn in connectors)
+                    {
+                        section = conn.Sections.FirstOrDefault(sec => sec.Id.Equals(new Guid(id)));
+                        if (section != null)
+                        {
+                            //item's a section so we render its trigger and actions
+                            if (section.Triggers.Any())
+                            {
+                                var trgFolder = CreateTreeNode(Guid.NewGuid().ToString(), section.Id.ToString(), queryStrings, "Triggers");
+                                trgFolder.HasChildren = true;
 
-            // this tree doesn't support rendering more than 1 level
-            throw new NotSupportedException();
+                                AddTriggers(section, nodes, queryStrings, trgFolder);
+                            }
+
+                            if (section.Actions.Any())
+                            {
+                                var actFolder = CreateTreeNode(Guid.NewGuid().ToString(), section.Id.ToString(), queryStrings, "Actions");
+
+                                //TODO: Add actions
+                                //AddTriggers(section, nodes, queryStrings);
+                            }
+                            break;
+                        }
+                    }
+
+                }
+
+
+            }
+            return nodes;
+
+        }
+
+        private void AddTriggers(ConnectorSection section, TreeNodeCollection nodes, FormDataCollection queryStrings, TreeNode trgFolder)
+        {
+            foreach (var trigger in section.Triggers)
+            {
+                var node = CreateTreeNode(trigger.Id.ToString(), trgFolder.Id.ToString(), queryStrings, trigger.Name);
+                nodes.Add(node);
+            }
+        }
+
+        private void AddSectionNodes(Connector connector, TreeNodeCollection nodes, FormDataCollection queryStrings)
+        {
+            foreach (var section in connector.Sections)
+            {
+                var node = CreateTreeNode(section.Id.ToString(), connector.Id.ToString(), queryStrings, section.Name);
+
+                if (section.Triggers.Any() || section.Actions.Any())
+                {
+                    node.HasChildren = true;
+                }
+
+                nodes.Add(node);
+            }
+        }
+
+        private void AddConnectorNodes(System.Net.Http.Formatting.FormDataCollection queryStrings, TreeNodeCollection nodes, Connector item)
+        {
+            var node = CreateTreeNode(item.Id.ToString(), "-1", queryStrings, item.Name);
+
+            if (item.Sections.Any())
+            {
+                node.HasChildren = true;
+            }
+            nodes.Add(node);
         }
     }
 }

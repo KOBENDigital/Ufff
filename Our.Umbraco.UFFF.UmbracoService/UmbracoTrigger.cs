@@ -1,13 +1,14 @@
 ﻿using Our.Umbraco.Ufff.Core.Attributes;
-using Our.Umbraco.Ufff.Core.Interfaces;
 using Our.Umbraco.UFFF.Core.Models;
 using System;
-using System.Collections.Generic;
-using Umbraco.Core.Services.Implement;
+using Umbraco.Core.Events;
+using Umbraco.Core.Models;
+using Umbraco.Core.Publishing;
+using Umbraco.Core.Services;
 
 namespace Our.Umbraco.Ufff.Core.Triggers
 {
-    [Connector("Umbraco", "Content")]
+    [Connector("umbraco", "Umbraco", "content", "Content")]
     public class SaveNodeTrigger : TriggerBase
     {
 
@@ -15,7 +16,7 @@ namespace Our.Umbraco.Ufff.Core.Triggers
 
         public override string Alias => "saveNode";
 
-        public override string Name => "Save Node"; 
+        public override string Name => "Save Node";
 
 
         /// <summary>
@@ -26,7 +27,8 @@ namespace Our.Umbraco.Ufff.Core.Triggers
             ContentService.Published += ContentService_Published;
         }
 
-        private void ContentService_Published(global::Umbraco.Core.Services.IContentService sender, global::Umbraco.Core.Events.PublishEventArgs<global::Umbraco.Core.Models.IContent> e)
+
+        private void ContentService_Published(IPublishingStrategy sender, PublishEventArgs<IContent> e)
         {
             this.Actions.ForEach(a => a.Run());
         }

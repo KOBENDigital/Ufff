@@ -1,6 +1,9 @@
 ﻿using Our.Umbraco.Ufff.Core.Interfaces;
+using Our.Umbraco.UFFF.Core.Models;
 using Our.Umbraco.UFFF.Core.Services;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Our.Umbraco.Ufff.Core
 {
@@ -8,7 +11,7 @@ namespace Our.Umbraco.Ufff.Core
     {
         private static DataService _dataService;
         public static TriggerService TriggerService { get; }
-        public static IEnumerable<ITrigger> Triggers { get; private set; }
+        public static IList<ITrigger> Triggers { get; private set; }
 
         static UfffApplication()
         {
@@ -21,18 +24,27 @@ namespace Our.Umbraco.Ufff.Core
         {
             _dataService.CreateTables();
             RegisterTriggers();
+            TreeStructure.Build(Triggers);
         }
 
 
         private static void RegisterTriggers()
         {
-            Triggers = TriggerService.GetAvailableTriggers();
+            Triggers = TriggerService.GetAvailableTriggers().ToList();
 
             foreach (var trigger in Triggers)
             {
-                trigger.Register();
+                try
+                {
+                    trigger.Register();
+                }
+                catch (Exception ex)
+                {
+                    Triggers.Remove(trigger);
+                }
             }
         }
+
 
     }
 }

@@ -22,12 +22,16 @@ namespace Our.Umbraco.UFFF.Core.Services
         {
             var triggers =  AppDomain.CurrentDomain.GetAssemblies()
                 .SelectMany(s => s.GetTypes())
-                .Where(p => typeof(ITrigger).IsAssignableFrom(p) && !p.IsInterface);
+                .Where(p => typeof(ITrigger).IsAssignableFrom(p) && !p.IsInterface && !p.IsAbstract);
 
+
+            var instances = new List<ITrigger>();
             foreach (var triggerType in triggers)
             {
-                yield return (ITrigger)Activator.CreateInstance(triggerType);
+                instances.Add((ITrigger)Activator.CreateInstance(triggerType));
             }
+
+            return instances;
         }
 
 

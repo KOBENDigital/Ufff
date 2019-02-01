@@ -12,12 +12,18 @@ namespace Our.Umbraco.Ufff.Core.Attributes
     [AttributeUsage(AttributeTargets.Class, Inherited = false)]
     public class ConnectorAttribute : Attribute
     {
-        private readonly string connectorName;
-        private readonly string sectionName;
-        public ConnectorAttribute(string connectorName, string sectionName)
+        public string ConnectorAlias { get; set; }
+        public string ConnectorName{ get; set; }
+        public string SectionAlias { get; set; }
+
+        public string SectionName { get; set; }
+
+        public ConnectorAttribute(string connectorAlias, string connectorName, string sectionAlias, string sectionName)
         {
-            this.connectorName = connectorName;
-            this.sectionName = sectionName;
+            ConnectorAlias = connectorAlias;
+            ConnectorName = connectorName;
+            SectionName = sectionName;
+            SectionAlias = sectionAlias;
         }
     }
 }

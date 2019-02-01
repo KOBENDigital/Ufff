@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Our.Umbraco.UFFF.MailService.Actions
 {
-    [Connector("Email", "Send")]
+    [Connector("email", "Email", "send", "Send")]
     public class SendEmail : ActionBase
     {
         public override string Alias => "sendEmail";                

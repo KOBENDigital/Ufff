@@ -3,7 +3,6 @@ using Our.Umbraco.Ufff.Core.Interfaces;
 
 namespace Our.Umbraco.UFFF.Core.Models
 {
-    [Connector("Umbraco", "Content")]
     public abstract class ActionBase : IAction
     {
         public abstract string Alias { get; }
